@@ -10,18 +10,21 @@ function mouseClickHandler(e) {
         
         let selectedRow = Math.floor(fieldMouseY/(field.height/field.cellPerSide));
         let selectedCol = Math.floor(fieldMouseX/(field.width/field.cellPerSide));
-
-        let term = field.cells[selectedRow][selectedCol].point;
+        let selectedCell = field.cells[selectedRow][selectedCol];
+        if(selectedCell.status === 1){
+            selectedCell.setStatus(0);
+            let term = selectedCell.point;
+            
+            player = game.getActivePlayer();
+            player.score += term;
         
-        player = game.getActivePlayer();
-        player.score += term;
-    
-        let acativePlayer = game.changeActivePlayer();
-        if(acativePlayer.id){
-            playerPointer.setPos((canvas.width + (field.x + field.width))/2 - playerPointer.width/2, playerPointer.y);
-        }
-        else{
-            playerPointer.setPos(field.x/2 - playerPointer.width/2, playerPointer.y);
+            let acativePlayer = game.changeActivePlayer();
+            if(acativePlayer.id){
+                playerPointer.setPos((canvas.width + (field.x + field.width))/2 - playerPointer.width/2, playerPointer.y);
+            }
+            else{
+                playerPointer.setPos(field.x/2 - playerPointer.width/2, playerPointer.y);
+            }
         }
     }
 }

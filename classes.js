@@ -66,7 +66,7 @@ class Field{
 }
 
 class Cell{
-    constructor(width, height, x, y, strokeStyle, fillStyle, point){
+    constructor(width, height, x, y, strokeStyle, fillStyle, point, status = 1){
         this.width = width;
         this.height = height;
         this.x = x;
@@ -74,6 +74,7 @@ class Cell{
         this.strokeStyle = strokeStyle;
         this.fillStyle = fillStyle;
         this.point = point;
+        this.status = status;
     }
 
     setPoint(point){
@@ -88,6 +89,19 @@ class Cell{
         }
 
         this.fillStyle = color;
+    }
+
+    setStatus(status){
+        this.status = status;
+
+        switch(status){
+            case 0:
+                this.fillStyle = '#eee';
+                break;
+            case 1:
+                setPoint(this.point);
+
+        }
     }
 }
 

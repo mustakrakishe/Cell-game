@@ -3,8 +3,8 @@ class Shape{
         x = 0,
         y = 0,
 
-        strokeStyle = 'black',
-        fillStyle = 'black',
+        strokeStyle = '#eee',
+        fillStyle = '#eee',
         
         form = 'rectangle'
     ){
@@ -20,12 +20,12 @@ class Shape{
 
 class Rectangle extends Shape{
     constructor(
-        x = null,
-        y = null,
+        x,
+        y,
         width = 10,
         height = 10,
-        strokeStyle = null,
-        fillStyle = null
+        strokeStyle,
+        fillStyle
     ){
         super(x, y, strokeStyle, fillStyle);
         this.width = width;
@@ -35,11 +35,11 @@ class Rectangle extends Shape{
 
 class Squere extends Rectangle{
     constructor(
-        x = null,
-        y = null,
+        x,
+        y,
         width = 10,
-        strokeStyle = null,
-        fillStyle = null
+        strokeStyle,
+        fillStyle
     ){
         super(x, y, width, width, strokeStyle, fillStyle);
     }
@@ -91,61 +91,19 @@ class Cell extends Squere{
 
 class Field extends Squere{
     constructor(
-        x = null,
-        y = null,
+        x,
+        y,
         width = 500,
-        strokeStyle = null,
-        fillStyle = null,
+        strokeStyle,
+        fillStyle,
         cellPerSide = 10,
         cellPadding = 5,
         cells = []
     ){
-        super(x, y, width, width, strokeStyle, fillStyle);
+        super(x, y, width, strokeStyle, fillStyle);
         this.cellPerSide = cellPerSide;
         this.cellPadding = cellPadding;
         this.cells = cells;
-        this.fill();
-    }
-
-    fill(){
-        var availablePointBases = [];
-        for(var cellNum = 0; cellNum < this.cellPerSide/2; cellNum++){
-            availablePointBases.push((cellNum + 1) * 10);
-        }
-
-        for(var rowNum = 0; rowNum < this.cellPerSide; rowNum++) {
-            this.cells[rowNum] = Array(this.cellPerSide);
-
-            var offset = 0;
-            this.cells[rowNum] = this.#generateHalfRow(this.cells[rowNum], rowNum, offset, availablePointBases.slice());
-            
-            offset = 1;
-            let availableNegativePoints = availablePointBases.map((val) => {
-                return -val;
-            });
-            this.#generateHalfRow(this.cells[rowNum], rowNum, offset, availableNegativePoints.slice());
-        }
-    }
-
-    #generateHalfRow(rowCells, rowNum, offset, points) {
-
-        for(let colNum = offset; colNum < rowCells.length; colNum += 2) {
-            let cell = new Cell;
-            cell.x = (cell.width + this.cellPadding) * colNum;
-            cell.y = (cell.width + this.cellPadding) * rowNum;
-            cell.width = 40;
-            // let randNum = this.#getRandomIntInclusive(0, points.length - 1);
-            // let point = points.splice(randNum, 1);
-            // cell.setPoint(point);
-
-            rowCells[colNum] = cell;
-        }
-    }
-
-    #getRandomIntInclusive(min, max) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 }
 
@@ -174,7 +132,7 @@ class Painter2D{
             if(elementType == 'Circle'){
                 canvasContext.arc(element.x, element.y, element.radius, 0, Math.PI*2);
             }
-            else if(elementType == 'Rectangle'){
+            else if(elementType == 'rectangle'){
                 canvasContext.rect(element.x, element.y, element.width, element.height);
             }
             

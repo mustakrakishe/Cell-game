@@ -6,18 +6,14 @@ var painter = new Painter2D;
 painter.canvas = canvas;
 
 var field = new Field;
-// console.log(field.cells);
-
+field.width = 400;
+field.x = canvas.width/2 - field.width/2;
+field.strokeStyle = 'black';
 
 function draw() {
     painter.clear();
 
-    field.cells.forEach(cellRow => {
-        cellRow.forEach(cell => {
-            console.log(cell);
-                painter.draw(cell);
-        })
-    })
+    painter.draw(field);
     
     
 }

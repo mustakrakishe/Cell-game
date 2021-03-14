@@ -83,3 +83,40 @@ class Painter2D{
         canvasContext.closePath();
     }
 }
+
+class Player{
+    constructor(id = 0, score = 0){
+        this.id = id;
+        this.score = score;
+    }
+}
+
+class Game{
+    constructor(players = [], activePlayerId = 0){
+        this.players = players;
+        this.activePlayerId = activePlayerId;
+    }
+
+    newPlayer(){
+        let newPlayer = new Player;
+        newPlayer.id = this.players.length;
+        this.players.push(newPlayer);
+
+        return this.players[newPlayer.id];
+    }
+
+    getActivePlayer(){
+        return this.players[this.activePlayerId];
+    }
+
+    changeActivePlayer(){
+        let nextId = this.activePlayerId + 1;
+        if(nextId < this.players.length){
+            this.activePlayerId = nextId;
+        }
+        else{
+            this.activePlayerId = 0;
+        }
+        return  this.getActivePlayer();
+    }
+}

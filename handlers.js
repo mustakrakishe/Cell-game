@@ -1,32 +1,31 @@
+function mouseClickHandler(e) {
+    let canvasMouseX = e.clientX - canvas.offsetLeft;
+    let canvasMouseY = e.clientY - canvas.offsetTop;
 
-function keyDownHandler(e) {
-    if(e.key == "Right" || e.key == "ArrowRight") {
-        rightPressed = true;
-    }
-    else if(e.key == "Left" || e.key == "ArrowLeft") {
-        leftPressed = true;
+    mouseInField = isInField(canvasMouseX, canvasMouseY, field);
+    if(mouseInField){
+        // get muse coordinates, relative of the field
+        fieldMouseX = canvasMouseX - field.x;
+        fieldMouseY = canvasMouseY - field.y;
+        
+        let selectedRow = Math.floor(fieldMouseY/(field.height/field.cellPerSide));
+        let selectedCol = Math.floor(fieldMouseX/(field.width/field.cellPerSide));
+
+        let term = field.cells[selectedRow][selectedCol].point;
+        
+        player = game.getActivePlayer();
+        player.score += term;
+        // console.log('');
+        // console.log('player1 (id: ' + player1.id + '; score: ' + player1.score + ')');
+        // console.log('player2 (id: ' + player2.id + '; score: ' + player2.score + ')');
+    
+        game.changeActivePlayer();
     }
 }
 
-function keyUpHandler(e) {
-    if(e.key == "Right" || e.key == "ArrowRight") {
-        rightPressed = false;
-    }
-    else if(e.key == "Left" || e.key == "ArrowLeft") {
-        leftPressed = false;
-    }
-}
+function isInField(x, y, field){
+    let XisInRange = field.x < x && x < (field.x + field.width);
+    let YisInRange = field.y < y && y < (field.y + field.height);
 
-function mouseMoveHandler(e) {
-    var relativeX = e.clientX - canvas.offsetLeft;
-    if(relativeX-paddle.width/2 >= 0 && relativeX+paddle.width/2 <= 
-        canvas.width) {
-        paddle.x = relativeX - paddle.width/2;
-    }
-    else if(relativeX-paddle.width/2 < 0){
-        paddle.x = 0;
-    }
-    else if(relativeX+paddle.width/2 > canvas.width){
-        paddle.x = canvas.width-paddle.width;
-    }
+    return XisInRange && YisInRange;
 }

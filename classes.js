@@ -46,6 +46,7 @@ class Field{
                 }
                 
                 cell.setPoint(point);
+                cell.setStatus(1);
 
                 cell.content = {
                     'text': cell.point | 0,
@@ -66,7 +67,7 @@ class Field{
 }
 
 class Cell{
-    constructor(width, height, x, y, strokeStyle, fillStyle, point, status = 1){
+    constructor(width, height, x, y, strokeStyle, fillStyle, point, status){
         this.width = width;
         this.height = height;
         this.x = x;
@@ -82,13 +83,17 @@ class Cell{
         let color = '';
 
         if(point > 0) {
-            color = 'rgb(21, 182, 21)';
+            color = 'rgba(21, 182, 21, 100)';
         }
         else if(point < 0){
-            color = 'rgb(255, 140, 140)';
+            color = 'rgba(255, 140, 140, 100)';
         }
 
         this.fillStyle = color;
+    }
+
+    setFillStyle(r, g, b, a){
+        this
     }
 
     setStatus(status){
@@ -98,10 +103,22 @@ class Cell{
             case 0:
                 this.fillStyle = '#eee';
                 break;
+
             case 1:
-                setPoint(this.point);
+                this.setPoint(this.point);
+                break;
+
+            case 2:
+                this.setPoint(this.point);
+                this.fillStyle = 'rgb(207, 207, 207)';
+                break;
 
         }
+    }
+
+    setTransparency(val){
+        this.fillStyle.replace(/\d+\)/, val + ')');
+        console.log(this.fillStyle);
     }
 }
 
@@ -165,7 +182,6 @@ class Painter2D{
     draw(element){
         let canvasContext = this.canvas.getContext("2d");
         canvasContext.beginPath();
-
         
         canvasContext.strokeStyle = element.strokeStyle;
         canvasContext.fillStyle = element.fillStyle;

@@ -16,7 +16,6 @@ field.cellPerSide = 10;
 field.cells = [];
 field.fill();
 
-
 let game = new Game;
 let player1 = game.newPlayer();
 let player2 = game.newPlayer();
@@ -27,12 +26,14 @@ Player1Label.font = '60px Arial';
 ctx.font = Player1Label.font;
 Player1Label.x = field.x/2 - ctx.measureText(Player1Label.text).width/2;
 Player1Label.y = 60;
+Player1Label.fillStyle = 'white';
 let Player1ScoreText = new Text;
 Player1ScoreText.text = player1.score;
 Player1ScoreText.font = '120px Arial';
 ctx.font = Player1ScoreText.font;
 Player1ScoreText.x = field.x/2 - ctx.measureText(Player1ScoreText.text).width/2;
 Player1ScoreText.y = field.width/2 + 40;
+Player1ScoreText.fillStyle = 'white';
 
 let Player2Label = new Text;
 Player2Label.text = 'Player 2';
@@ -40,12 +41,14 @@ Player2Label.font = '60px Arial';
 ctx.font = Player2Label.font;
 Player2Label.x = (canvas.width + (field.x + field.width))/2 - ctx.measureText(Player2Label.text).width/2;
 Player2Label.y = 60;
+Player2Label.fillStyle = 'white';
 let Player2ScoreText = new Text;
 Player2ScoreText.text = player2.score;
 Player2ScoreText.font = '120px Arial';
 ctx.font = Player2ScoreText.font;
 Player2ScoreText.x = (canvas.width + (field.x + field.width))/2 - ctx.measureText(Player2ScoreText.text).width/2;
 Player2ScoreText.y = field.width/2 + 40;
+Player1ScoreText.fillStyle = 'white';
 
 let playerPointer = new PlayerPointer;
 playerPointer.width = 80;
@@ -57,8 +60,6 @@ document.addEventListener("click", mouseClickHandler, false);
 
 function draw() {
     painter.clear();
-
-    painter.draw(field);
     
     field.cells.forEach(row => {
         row.forEach(cell => {

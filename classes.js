@@ -35,22 +35,17 @@ class Field{
                 cell.x = this.x + cell.width * c;
                 cell.y = this.y + cell.height * r;
 
-
+                let point = 0;
                 if((!r_odd && !c_odd) || (r_odd && c_odd)){
-                    cell.strokeStyle = 'rgb(21, 182, 21)';
-                    cell.fillStyle = 'rgb(21, 182, 21)'
-
                     let random = randomInteger(0, rowPositivePoints.length - 1);
-                    cell.point = parseInt(rowPositivePoints.splice(random, 1));
+                    point = parseInt(rowPositivePoints.splice(random, 1));
                 }
                 else{
-                    cell.strokeStyle = 'rgb(255, 140, 140)';
-                    cell.fillStyle = 'rgb(255, 140, 140)'
-
-                    
                     let random = randomInteger(0, rowNegativePoints.length - 1);
-                    cell.point = parseInt(rowNegativePoints.splice(random, 1));
+                    point = parseInt(rowNegativePoints.splice(random, 1));
                 }
+                
+                cell.setPoint(point);
 
                 cell.content = {
                     'text': cell.point | 0,
@@ -86,10 +81,10 @@ class Cell{
         let color = '';
 
         if(point > 0) {
-            color = 'green';
+            color = 'rgb(21, 182, 21)';
         }
         else if(point < 0){
-            color = 'red';
+            color = 'rgb(255, 140, 140)';
         }
 
         this.fillStyle = color;

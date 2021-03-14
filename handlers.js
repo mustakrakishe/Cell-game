@@ -15,11 +15,14 @@ function mouseClickHandler(e) {
         
         player = game.getActivePlayer();
         player.score += term;
-        // console.log('');
-        // console.log('player1 (id: ' + player1.id + '; score: ' + player1.score + ')');
-        // console.log('player2 (id: ' + player2.id + '; score: ' + player2.score + ')');
     
-        game.changeActivePlayer();
+        let acativePlayer = game.changeActivePlayer();
+        if(acativePlayer.id){
+            playerPointer.setPos((canvas.width + (field.x + field.width))/2 - playerPointer.width/2, playerPointer.y);
+        }
+        else{
+            playerPointer.setPos(field.x/2 - playerPointer.width/2, playerPointer.y);
+        }
     }
 }
 

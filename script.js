@@ -14,62 +14,8 @@ field.strokeStyle = 'black';
 field.fillStyle = '#eee';
 field.cellPerSide = 10;
 field.cells = [];
+field.fill();
 
-// generate the available point bases array
-points = [];
-for(let cellNum = 0; cellNum < field.cellPerSide/2; cellNum++) {
-    points.push((cellNum + 1) * 10);
-}
-
-// fill the field cells array
-for(let r = 0; r < field.cellPerSide; r++) {
-    let r_odd = r%2;
-    let rowPositivePoints = points.slice();
-    let rowNegativePoints = points.slice().map(val => {
-        return -val;
-    });
-    let row = [];
-
-    for(let c = 0; c < field.cellPerSide; c++) {
-        let c_odd = c%2;
-        let cell = new Cell;
-        cell.width = 40;
-        cell.height = 40;
-        cell.x = field.x + cell.width * c;
-        cell.y = field.y + cell.height * r;
-
-
-        if((!r_odd && !c_odd) || (r_odd && c_odd)){
-            cell.strokeStyle = 'rgb(21, 182, 21)';
-            cell.fillStyle = 'rgb(21, 182, 21)'
-
-            let random = randomInteger(0, rowPositivePoints.length - 1);
-            cell.point = parseInt(rowPositivePoints.splice(random, 1));
-        }
-        else{
-            cell.strokeStyle = 'rgb(255, 140, 140)';
-            cell.fillStyle = 'rgb(255, 140, 140)'
-
-            
-            let random = randomInteger(0, rowNegativePoints.length - 1);
-            cell.point = parseInt(rowNegativePoints.splice(random, 1));
-        }
-
-        cell.content = {
-            'text': cell.point | 0,
-            'font': '20px Arial',
-            'fillStyle': 'white',
-            'x': cell.x,
-            'y': cell.y
-        };
-        ctx.font = cell.content.font;
-        cell.content.x = cell.x + cell.width/2 - ctx.measureText(cell.content.text).width/2;
-        cell.content.y = cell.y + cell.height/2 + 7;
-
-        row.push(cell);
-    }
-    field.cells.push(row);
-}
 
 let game = new Game;
 let player1 = game.newPlayer();
@@ -101,6 +47,12 @@ ctx.font = Player2ScoreText.font;
 Player2ScoreText.x = (canvas.width + (field.x + field.width))/2 - ctx.measureText(Player2ScoreText.text).width/2;
 Player2ScoreText.y = field.width/2 + 40;
 
+let playerPointer = new PlayerPointer;
+playerPointer.width = 80;
+playerPointer.height = 40;
+playerPointer.setPos(field.x/2 - playerPointer.width/2, canvas.height - 17);
+playerPointer.fillStyle = 'white';
+
 document.addEventListener("click", mouseClickHandler, false);
 
 function draw() {
@@ -108,12 +60,12 @@ function draw() {
 
     painter.draw(field);
     
-    for(r = 0; r < field.cellPerSide; r++) {
-        for(c = 0; c < field.cellPerSide; c++) {
-            painter.draw(field.cells[r][c]);
-            painter.draw(field.cells[r][c].content);
-        }
-    }
+    field.cells.forEach(row => {
+        row.forEach(cell => {
+            painter.draw(cell);
+            painter.draw(cell.content);
+        });
+    });
     
     painter.draw(Player1Label);
     painter.draw(Player2Label);
@@ -121,12 +73,16 @@ function draw() {
     ctx.font = Player1ScoreText.font;
 
     Player1ScoreText.text = player1.score;
+    ctx.font = Player1ScoreText.font;
     Player1ScoreText.x = field.x/2 - ctx.measureText(Player1ScoreText.text).width/2;
     painter.draw(Player1ScoreText)
 
     Player2ScoreText.text = player2.score;
+    ctx.font = Player2ScoreText.font;
     Player2ScoreText.x = (canvas.width + (field.x + field.width))/2 - ctx.measureText(Player2ScoreText.text).width/2;
     painter.draw(Player2ScoreText)
+
+    painter.draw(playerPointer);
 
     requestAnimationFrame(draw);
 }

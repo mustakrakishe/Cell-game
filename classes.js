@@ -10,6 +10,64 @@ class Field{
         this.cellPerSide = cellPerSide;
         this.cells = cells;
     }
+
+    fill(){
+        // generate the available point bases array
+        let availablePointBases = [];
+        for(let baseNum = 0; baseNum < this.cellPerSide/2; baseNum++) {
+            availablePointBases.push((baseNum + 1) * 10);
+        }
+
+        // fill the field cells array
+        for(let r = 0; r < this.cellPerSide; r++) {
+            let r_odd = r%2;
+            let rowPositivePoints = availablePointBases.slice();
+            let rowNegativePoints = availablePointBases.slice().map(val => {
+                return -val;
+            });
+            let row = [];
+
+            for(let c = 0; c < this.cellPerSide; c++) {
+                let c_odd = c%2;
+                let cell = new Cell;
+                cell.width = 40;
+                cell.height = 40;
+                cell.x = this.x + cell.width * c;
+                cell.y = this.y + cell.height * r;
+
+
+                if((!r_odd && !c_odd) || (r_odd && c_odd)){
+                    cell.strokeStyle = 'rgb(21, 182, 21)';
+                    cell.fillStyle = 'rgb(21, 182, 21)'
+
+                    let random = randomInteger(0, rowPositivePoints.length - 1);
+                    cell.point = parseInt(rowPositivePoints.splice(random, 1));
+                }
+                else{
+                    cell.strokeStyle = 'rgb(255, 140, 140)';
+                    cell.fillStyle = 'rgb(255, 140, 140)'
+
+                    
+                    let random = randomInteger(0, rowNegativePoints.length - 1);
+                    cell.point = parseInt(rowNegativePoints.splice(random, 1));
+                }
+
+                cell.content = {
+                    'text': cell.point | 0,
+                    'font': '20px Arial',
+                    'fillStyle': 'white',
+                    'x': cell.x,
+                    'y': cell.y
+                };
+                ctx.font = cell.content.font;
+                cell.content.x = cell.x + cell.width/2 - ctx.measureText(cell.content.text).width/2;
+                cell.content.y = cell.y + cell.height/2 + 7;
+
+                row.push(cell);
+            }
+            this.cells.push(row);
+        }
+    }
 }
 
 class Cell{
@@ -35,6 +93,43 @@ class Cell{
         }
 
         this.fillStyle = color;
+    }
+}
+
+class PlayerPointer{
+    constructor(width, height, x, y, strokeStyle, fillStyle){
+        this.width = width;
+        this.height = height;
+        this.x = x;
+        this.y = y;
+        this.a = {
+            'x': x,
+            'y': y
+        }
+        this.b = {
+            'x': this.x + this.width/2,
+            'y': this.y - this.height
+        }
+        this.c = {
+            'x': this.x + this.width,
+            'y': this.y
+        }
+        this.strokeStyle = strokeStyle;
+        this.fillStyle = fillStyle;
+    }
+
+    setPos(x, y){
+        this.x = x;
+        this.y = y
+
+        this.a.x = this.x;
+        this.a.y = this.y;
+
+        this.b.x = this.x + 40;
+        this.b.y = this.y - 40;
+
+        this.c.x = this.x + 80;
+        this.c.y = this.y;
     }
 }
 
@@ -74,6 +169,13 @@ class Painter2D{
         else if(element.hasOwnProperty('radius')) {
             // It's an arc
             canvasContext.fillArc(element.x, element.y, element.radius, 0, Math.PI*2);
+        }
+        else if(element.hasOwnProperty('a') && element.hasOwnProperty('b') && element.hasOwnProperty('c')) {
+            // It's a triangle
+            ctx.moveTo(element.a.x, element.a.y);
+            ctx.lineTo(element.b.x, element.b.y);
+            ctx.lineTo(element.c.x, element.c.y);
+            ctx.fill();
         }
         else{
             // It's a rectangle

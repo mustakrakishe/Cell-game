@@ -89,10 +89,6 @@ class Cell{
         this.fillStyle = color;
     }
 
-    setFillStyle(r, g, b, a){
-        this
-    }
-
     setStatus(status){
         this.status = status;
 
@@ -113,9 +109,28 @@ class Cell{
         }
     }
 
-    setTransparency(val){
-        this.fillStyle.replace(/\d+\)/, val + ')');
-        console.log(this.fillStyle);
+    block() {
+        this.setStatus(0);
+    }
+
+    action() {
+        switch(this.status) {
+            case 0:
+                this.inaction
+                break;
+        }
+    }
+
+    #action0() {
+        // Do nothing
+    }
+
+    #action1() {
+        // add point
+    }
+
+    #action2() {
+        // subtract point
     }
 }
 

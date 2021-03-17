@@ -13,12 +13,41 @@ let matrixSettings = {
 }
 let matrix = nonRepeatNumMatrix(matrixSettings.width, matrixSettings.height, matrixSettings.minVal, matrixSettings.step);
 
+let cells = [];
+matrix.forEach(matrixRow => {
+    let cellRow = [];
+
+    matrixRow.forEach(element => {
+        cell = new Cell;
+
+        let cell = new Cell;
+        cell.width = 40;
+        cell.height = 40;
+        cell.x = this.x + cell.width * c;
+        cell.y = this.y + cell.height * r;
+        
+        cell.setPoint(point);
+        cell.setStatus(1);
+
+        cell.content = {
+            'text': cell.point | 0,
+            'font': '20px Arial',
+            'fillStyle': 'white',
+            'x': cell.x,
+            'y': cell.y
+        };
+        ctx.font = cell.content.font;
+        cell.content.x = cell.x + cell.width/2 - ctx.measureText(cell.content.text).width/2;
+        cell.content.y = cell.y + cell.height/2 + 7;
+    });
+});
+
 var field = new Field;
 field.width = 400;
 field.height = 400;
 field.x = canvas.width/2 - field.width/2;
 field.y = 0;
-field.matrix = matrix;
+field.cells = cells;
 // field.setCellsStatusPattern(cellsStatusPattern);
 
 let game = new Game;

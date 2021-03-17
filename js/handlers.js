@@ -21,6 +21,7 @@ function mouseClickHandler(e) {
             // change active player score
             let term = selectedCell.point;
             let player = game.getActivePlayer();
+            // game.processCell(cell);
             player.score += term;
 
             if(player.score >= 200){

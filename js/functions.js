@@ -8,25 +8,6 @@ function nonRepeatNumMatrix(width, height, start, step) {
     return matrix;
 }
 
-function squareSudokuMatrix(start, step, order) {
-    let matrix = [];
-
-    let positiveHalfBase = genAscSequence(start, step, order/2);
-    let negativeHalfBase = positiveHalfBase.map(val => {
-        return -val;
-    });
-
-    mix(positiveHalfBase);
-    mix(negativeHalfBase);
-
-    let base = crissCross(positiveHalfBase, negativeHalfBase);
-
-    matrix = simmetricMatrix(base);
-
-    mixRows(matrix);
-    console.log(matrix);
-}
-
 function genAscSequence(start, step, length) {
     let sequence = [];
     
@@ -70,41 +51,4 @@ function explodeToMatrix(array, width, height) {
     }
 
     return matrix;
-}
-
-function crissCross(arr1, arr2) {
-    newArr = [];
-
-    for(let i = 0, length = arr1.length; i < length; i++) {
-        newArr.push(arr1[i]);
-        newArr.push(arr2[i]);
-    }
-
-    return newArr
-}
-
-function simmetricMatrix(base) {
-    let matrix = [];
-
-    for(let i = 0, order = base.length; i < order; i++) {
-        matrix.push(base.slice());
-        let shiftedElement = base.shift();
-        base.push(shiftedElement);
-    }
-
-    return matrix;
-}
-
-function mixRows(matrix) {
-    let oldMatrix = matrix.splice(0);
-    let indexes = [];
-
-    for(let i = 0, length = oldMatrix.length; i < length; i++) {
-        indexes.push(i);
-    }
-    mix(indexes);
-
-    indexes.forEach(i => {
-        matrix.push(oldMatrix[i]);
-    })
 }

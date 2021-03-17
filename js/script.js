@@ -5,16 +5,21 @@ var ctx = canvas.getContext("2d");
 var painter = new Painter2D;
 painter.canvas = canvas;
 
+let matrixSettings = {
+    'width': 10,
+    'height': 10,
+    'minVal': 0,
+    'step': 1
+}
+let matrix = nonRepeatNumMatrix(matrixSettings.width, matrixSettings.height, matrixSettings.minVal, matrixSettings.step);
+
 var field = new Field;
 field.width = 400;
 field.height = 400;
 field.x = canvas.width/2 - field.width/2;
 field.y = 0;
-field.strokeStyle = 'black';
-field.fillStyle = '#eee';
-field.cellPerSide = 10;
-field.cells = [];
-field.fill();
+field.matrix = matrix;
+// field.setCellsStatusPattern(cellsStatusPattern);
 
 let game = new Game;
 let player1 = game.newPlayer();

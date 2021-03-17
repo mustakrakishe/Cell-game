@@ -1,13 +1,10 @@
-
 class Field{
-    constructor(width, height, x, y, strokeStyle, fillStyle, cellPerSide, cells){
+    constructor(width, height, x, y, matrix, cells){
         this.width = width;
         this.height = height;
         this.x = x;
         this.y = y;
-        this.strokeStyle = strokeStyle;
-        this.fillStyle = fillStyle;
-        this.cellPerSide = cellPerSide;
+        this.matrix = matrix;
         this.cells = cells;
     }
 

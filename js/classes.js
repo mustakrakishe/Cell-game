@@ -120,12 +120,12 @@ class Cell{
     
                 case 2:
                     // A cell adds it's point to player score
-                    this.fillStyle = 'rgba(21, 182, 21, 100)';
+                    this.fillStyle = 'rgb(255, 140, 140)';
                     break;
     
                 case 3:
                     // A cell subtracts it's point from player score
-                    this.fillStyle = 'rgba(255, 140, 140, 100)';
+                    this.fillStyle = 'rgb(0, 255, 255)';
                     break;
     
             }

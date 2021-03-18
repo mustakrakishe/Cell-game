@@ -5,7 +5,20 @@
 
 canvas {
     background: #eee;
-    /* background-color: rgb(207, 207, 207); */
+    /* background-color: aqua */
     display: block;
     margin: 0 auto;
 }
+
+/*
+light gray
+#eee
+
+darker gray
+rgb(207, 207, 207)
+
+green
+rgb(21, 182, 21)
+
+pink
+rgb(255, 140, 140)

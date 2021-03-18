@@ -22,16 +22,18 @@ let matrix = nonRepeatNumMatrix(matrixSettings.width, matrixSettings.height, mat
 
 // fill the field with cells
 matrix.forEach((mRow, r) => {
+    r_odd = r%2;
     let cellRow = [];
 
     mRow.forEach((val, c) => {
+        c_odd = c%2;
+
         let cell = new Cell;
         cell.width = 40;
         cell.height = 40;
         cell.x = field.x + cell.width * c;
         cell.y = field.y + cell.height * r;
         cell._point = val;
-        cell.status(3);
 
         content = new Text;
         content.text = cell._point;
@@ -44,6 +46,33 @@ matrix.forEach((mRow, r) => {
         cell.content = content;
 
         field.setCell(cell, r, c);
+    });
+});
+
+// Fill a cellStatusPattern
+let cellStatusPattern = [];
+for(let r = 0; r < matrix.length; r++) {
+    r_odd = r%2;
+
+    let row = [];
+    for(let c = 0; c < matrix[0].length; c++) {
+        c_odd = c%2;
+
+        let status = 2;
+        if(r_odd && c_odd || !r_odd && !c_odd){
+            status = 3;
+        }
+
+        row.push(status);
+    }
+    
+    cellStatusPattern.push(row);
+}
+
+// Apply a cellStatusPattern
+field.cells.forEach((row, r) => {
+    row.forEach((cell, c) => {
+        cell.status(cellStatusPattern[r][c]);
     });
 });
 
@@ -116,7 +145,7 @@ function draw() {
 
     painter.draw(playerPointer);
 
-    requestAnimationFrame(draw);
+    // requestAnimationFrame(draw);
 }
 
 draw();

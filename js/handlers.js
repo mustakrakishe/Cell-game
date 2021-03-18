@@ -27,14 +27,14 @@ function mouseClickHandler(e) {
                 newPlayerPointerX = (canvas.width + (field.x + field.width))/2 - playerPointer.width/2;
 
                 // Change available cells
-                field.cells.forEach((row, rowNum) => {
+                field.cells.forEach((row, r) => {
                     let status = 1;
-                    if(rowNum === selectedRow) {
-                        status = 2;
-                    }
 
-                    row.forEach(cell => {
+                    row.forEach((cell, c) => {
                         if(cell.status() > 0){
+                            if(r == selectedRow) {
+                                status = cellStatusPattern[c][r];
+                            }
                             cell.status(status);
                         }
                     });
@@ -43,17 +43,17 @@ function mouseClickHandler(e) {
             else{
                 // Player1
                 newPlayerPointerX = field.x/2 - playerPointer.width/2;
-
+                
                 // Change available cells
-                field.cells.forEach((row, rowNum) => {
+                field.cells.forEach((row, r) => {
 
-                    row.forEach((cell, colNum) => {
+                    row.forEach((cell, c) => {
                         let status = 1;
-                        if(colNum === selectedCol) {
-                            status = 2;
-                        }
 
                         if(cell.status() > 0){
+                            if(c == selectedCol) {
+                                status = cellStatusPattern[c][r];
+                            }
                             cell.status(status);
                         }
                     });
@@ -61,6 +61,22 @@ function mouseClickHandler(e) {
             }
             playerPointer.setPos(newPlayerPointerX, playerPointer.y);
         }
+    }
+    draw();
+
+    setTimeout(checkEndGame, 50);
+
+    function checkEndGame() {
+        game.players.forEach(player => {
+            if(player.score >= 300) {
+                let winner = 'Player 1';
+                if(player.id){
+                    winner = 'Player 2';
+                }
+                alert(winner + ' win!');
+                document.location.reload();
+            }
+        });
     }
 }
 

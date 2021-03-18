@@ -31,7 +31,7 @@ matrix.forEach((mRow, r) => {
         cell.x = field.x + cell.width * c;
         cell.y = field.y + cell.height * r;
         cell._point = val;
-        cell.status(2);
+        cell.status(3);
 
         content = new Text;
         content.text = cell._point;

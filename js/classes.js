@@ -273,14 +273,11 @@ class Game{
             case 3:
                 // Subtract cell point from player's score
                 // and block a cell
-                console.log('Do act #3');
-                this.players[this._activePlayerId].score -= cell.point;
-                cell.setStatus(0);
+                this.players[this._activePlayerId].score -= cell.point();
+                cell.status(0);
                 break;
 
             default:
-                
-                console.log('Do default act');
         }
     }
 

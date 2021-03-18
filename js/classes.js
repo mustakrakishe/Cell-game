@@ -1,11 +1,31 @@
 class Field{
-    constructor(width, height, x, y, matrix, cells){
+    constructor(width, height, x, y, matrix, cells = []){
         this.width = width;
         this.height = height;
         this.x = x;
         this.y = y;
-        this.matrix = matrix;
         this.cells = cells;
+    }
+
+    getCell(row, col){
+        return this.cells[row][col];
+    }
+
+    setCell(cell, row, col){
+        if(row > this.cells.length - 1){
+            for(let r = this.cells.length - 1; r < row; r++) {
+                this.cells.push([]);
+            }
+        }
+        
+        if(col > this.cells[row].length - 1){
+            for(let c = this.cells[row].length - 1; c < col; c++) {
+                this.cells[row].push(null);
+            }
+        }
+
+        this.cells[row][col] = cell;
+        return this.getCell(row, col);
     }
 
     fill(){
@@ -64,73 +84,54 @@ class Field{
 }
 
 class Cell{
-    constructor(width, height, x, y, strokeStyle, fillStyle, point, status){
+    constructor(width, height, x, y, strokeStyle, fillStyle, point, status, content){
         this.width = width;
         this.height = height;
         this.x = x;
         this.y = y;
         this.strokeStyle = strokeStyle;
         this.fillStyle = fillStyle;
-        this.point = point;
-        this.status = status;
+        this._point = point;
+        this._status = status;
+        this.content = content;
     }
 
-    setPoint(point){
-        this.point = point;
-        let color = '';
-
-        if(point > 0) {
-            color = 'rgba(21, 182, 21, 100)';
+    point(val){
+        if(typeof(val) != 'undefined') {
+            this._point = val;
         }
-        else if(point < 0){
-            color = 'rgba(255, 140, 140, 100)';
+        return this._point;
+    }
+    
+    status(val){
+        if(typeof(val) != 'undefined') {
+            this._status = val;
+
+            switch(val){
+                case 0:
+                    // block
+                    this.fillStyle = '#eee';
+                    break;
+    
+                case 1:
+                    // Make anavailable for current player
+                    this.fillStyle = 'rgb(207, 207, 207)';
+                    break;
+    
+                case 2:
+                    // A cell adds it's point to player score
+                    this.fillStyle = 'rgba(21, 182, 21, 100)';
+                    break;
+    
+                case 3:
+                    // A cell subtracts it's point from player score
+                    this.fillStyle = 'rgba(255, 140, 140, 100)';
+                    break;
+    
+            }
         }
-
-        this.fillStyle = color;
-    }
-
-    setStatus(status){
-        this.status = status;
-
-        switch(status){
-            case 0:
-                this.fillStyle = '#eee';
-                break;
-
-            case 1:
-                this.setPoint(this.point);
-                break;
-
-            case 2:
-                this.setPoint(this.point);
-                this.fillStyle = 'rgb(207, 207, 207)';
-                break;
-
-        }
-    }
-
-    block() {
-        this.setStatus(0);
-    }
-
-    action() {
-        switch(this.status) {
-            case 0:
-                this.inaction
-                break;
-        }
-    }
-
-    #action0() {
-        // Do nothing
-    }
-
-    #action1() {
-        // add point
-    }
-
-    #action2() {
-        // subtract point
+        
+        return this._status;        
     }
 }
 
@@ -224,7 +225,7 @@ class Painter2D{
 }
 
 class Player{
-    constructor(id = 0, score = 0){
+    constructor(id, score){
         this.id = id;
         this.score = score;
     }
@@ -233,29 +234,57 @@ class Player{
 class Game{
     constructor(players = [], activePlayerId = 0){
         this.players = players;
-        this.activePlayerId = activePlayerId;
+        this._activePlayerId = activePlayerId;
     }
 
-    newPlayer(){
-        let newPlayer = new Player;
-        newPlayer.id = this.players.length;
-        this.players.push(newPlayer);
+    activePlayerId(id) {
 
-        return this.players[newPlayer.id];
-    }
+        if(typeof(id) != 'undefined') {
+            if(id == 'next') {
+                id = this._activePlayerId + 1;
 
-    getActivePlayer(){
-        return this.players[this.activePlayerId];
-    }
+                if(id >= this.players.length){
+                    id = 0;
+                }
+            }
 
-    changeActivePlayer(){
-        let nextId = this.activePlayerId + 1;
-        if(nextId < this.players.length){
-            this.activePlayerId = nextId;
+            this._activePlayerId = id;
         }
-        else{
-            this.activePlayerId = 0;
+        return this._activePlayerId;
+    }
+
+    addPlayer(player) {
+        let newId = this.players.length;
+        player.id = newId;
+        this.players.push(player);
+
+        return this.players[newId];
+    }
+
+    actCell(cell) {
+        switch(cell.status()) {
+            case 2:
+                // Add cell point to player's score
+                // and block a cell
+                this.players[this._activePlayerId].score += cell.point();
+                cell.status(0);
+                break;
+
+            case 3:
+                // Subtract cell point from player's score
+                // and block a cell
+                console.log('Do act #3');
+                this.players[this._activePlayerId].score -= cell.point;
+                cell.setStatus(0);
+                break;
+
+            default:
+                
+                console.log('Do default act');
         }
-        return  this.getActivePlayer();
+    }
+
+    concatPlayerScore(playerId, val) {
+        player.score
     }
 }

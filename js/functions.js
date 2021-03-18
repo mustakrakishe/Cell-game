@@ -4,7 +4,7 @@ function nonRepeatNumMatrix(width, height, start, step) {
     let availableValues = genAscSequence(start, step, width*height);
     mix(availableValues);
     matrix = explodeToMatrix(availableValues, width, height);
-    console.log(matrix);
+    
     return matrix;
 }
 

@@ -5,6 +5,13 @@ var ctx = canvas.getContext("2d");
 var painter = new Painter2D;
 painter.canvas = canvas;
 
+var field = new Field;
+field.width = 400;
+field.height = 400;
+field.x = canvas.width/2 - field.width/2;
+field.y = 0;
+// field.setCellsStatusPattern(cellsStatusPattern);
+
 let matrixSettings = {
     'width': 10,
     'height': 10,
@@ -13,46 +20,38 @@ let matrixSettings = {
 }
 let matrix = nonRepeatNumMatrix(matrixSettings.width, matrixSettings.height, matrixSettings.minVal, matrixSettings.step);
 
-let cells = [];
-matrix.forEach(matrixRow => {
+// fill the field with cells
+matrix.forEach((mRow, r) => {
     let cellRow = [];
 
-    matrixRow.forEach(element => {
-        cell = new Cell;
-
+    mRow.forEach((val, c) => {
         let cell = new Cell;
         cell.width = 40;
         cell.height = 40;
-        cell.x = this.x + cell.width * c;
-        cell.y = this.y + cell.height * r;
-        
-        cell.setPoint(point);
-        cell.setStatus(1);
+        cell.x = field.x + cell.width * c;
+        cell.y = field.y + cell.height * r;
+        cell._point = val;
+        cell.status(2);
 
-        cell.content = {
-            'text': cell.point | 0,
-            'font': '20px Arial',
-            'fillStyle': 'white',
-            'x': cell.x,
-            'y': cell.y
-        };
-        ctx.font = cell.content.font;
-        cell.content.x = cell.x + cell.width/2 - ctx.measureText(cell.content.text).width/2;
-        cell.content.y = cell.y + cell.height/2 + 7;
+        content = new Text;
+        content.text = cell._point;
+        content.font = '20px Arial';
+        content.fillStyle = 'white';
+        ctx.font = content.font;
+        content.x = cell.x + cell.width/2 - ctx.measureText(content.text).width/2;
+        content.y = cell.y + cell.height/2 + 7;
+
+        cell.content = content;
+
+        field.setCell(cell, r, c);
     });
 });
 
-var field = new Field;
-field.width = 400;
-field.height = 400;
-field.x = canvas.width/2 - field.width/2;
-field.y = 0;
-field.cells = cells;
-// field.setCellsStatusPattern(cellsStatusPattern);
-
 let game = new Game;
-let player1 = game.newPlayer();
-let player2 = game.newPlayer();
+let player1 = game.addPlayer(new Player);
+player1.score = 0;
+let player2 = game.addPlayer(new Player);
+player2.score = 0;
 
 let Player1Label = new Text;
 Player1Label.text = 'Player 1';
@@ -104,8 +103,6 @@ function draw() {
     
     painter.draw(Player1Label);
     painter.draw(Player2Label);
-
-    ctx.font = Player1ScoreText.font;
 
     Player1ScoreText.text = player1.score;
     ctx.font = Player1ScoreText.font;

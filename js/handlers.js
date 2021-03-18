@@ -1,4 +1,5 @@
 function mouseClickHandler(e) {
+    
     // Get mause coordinates, relative to the canvas
     let canvasMouseX = e.clientX - canvas.offsetLeft;
     let canvasMouseY = e.clientY - canvas.offsetTop;
@@ -9,48 +10,32 @@ function mouseClickHandler(e) {
         fieldMouseY = canvasMouseY - field.y;
         
         // Get selected cell
-        let selectedRow = Math.floor(fieldMouseY/(field.height/field.cellPerSide));
-        let selectedCol = Math.floor(fieldMouseX/(field.width/field.cellPerSide));
-        let selectedCell = field.cells[selectedRow][selectedCol];
+        let selectedRow = Math.floor(fieldMouseY/(field.height/field.cells.length));
+        let selectedCol = Math.floor(fieldMouseX/(field.width/field.cells[0].length));
+        let selectedCell = field.getCell(selectedRow, selectedCol);
         
         // If a cell is unblocked
-        if(selectedCell.status === 1){
-            // Block selected cell
-            selectedCell.setStatus(0);
-            
-            // change active player score
-            let term = selectedCell.point;
-            let player = game.getActivePlayer();
-            // game.processCell(cell);
-            player.score += term;
-
-            if(player.score >= 200){
-                let winner = 'Player 1';
-                if(player.id){
-                    winner = 'Player 2';
-                }
-                alert(winner + ' победил!');
-                document.location.reload();
-            }
+        if(selectedCell.status() > 1){
+            game.actCell(selectedCell);
 
             // Change active player
-            let acativePlayer = game.changeActivePlayer();
+            let acativePlayerId = game.activePlayerId('next');
             let newPlayerPointerX = 0;
 
-            if(acativePlayer.id){
+            if(acativePlayerId){
                 // Player2
                 newPlayerPointerX = (canvas.width + (field.x + field.width))/2 - playerPointer.width/2;
 
                 // Change available cells
                 field.cells.forEach((row, rowNum) => {
-                    let status = 2;
+                    let status = 1;
                     if(rowNum === selectedRow) {
-                        status = 1;
+                        status = 2;
                     }
 
                     row.forEach(cell => {
-                        if(cell.status !== 0){
-                            cell.setStatus(status);
+                        if(cell.status() > 0){
+                            cell.status(status);
                         }
                     });
                 });
@@ -60,16 +45,16 @@ function mouseClickHandler(e) {
                 newPlayerPointerX = field.x/2 - playerPointer.width/2;
 
                 // Change available cells
-                field.cells.forEach(row => {
+                field.cells.forEach((row, rowNum) => {
 
                     row.forEach((cell, colNum) => {
-                        let status = 2;
+                        let status = 1;
                         if(colNum === selectedCol) {
-                            status = 1;
+                            status = 2;
                         }
 
-                        if(cell.status !== 0){
-                            cell.setStatus(status);
+                        if(cell.status() > 0){
+                            cell.status(status);
                         }
                     });
                 });

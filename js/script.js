@@ -1,4 +1,3 @@
-//попробовать формулу окружности шарика
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
@@ -10,7 +9,6 @@ field.width = 400;
 field.height = 400;
 field.x = canvas.width/2 - field.width/2;
 field.y = 0;
-// field.setCellsStatusPattern(cellsStatusPattern);
 
 let matrixSettings = {
     'width': 10,
@@ -20,10 +18,9 @@ let matrixSettings = {
 }
 let matrix = nonRepeatNumMatrix(matrixSettings.width, matrixSettings.height, matrixSettings.minVal, matrixSettings.step);
 
-// fill the field with cells
+// Fill the field with cells
 matrix.forEach((mRow, r) => {
     r_odd = r%2;
-    let cellRow = [];
 
     mRow.forEach((val, c) => {
         c_odd = c%2;
@@ -45,11 +42,11 @@ matrix.forEach((mRow, r) => {
 
         cell.content = content;
 
-        field.setCell(cell, r, c);
+        field.cell(r, c, cell);
     });
 });
 
-// Fill a cellStatusPattern
+// Create a cellStatusPattern
 let cellStatusPattern = [];
 for(let r = 0; r < matrix.length; r++) {
     r_odd = r%2;
@@ -115,7 +112,7 @@ Player1ScoreText.fillStyle = 'white';
 let playerPointer = new PlayerPointer;
 playerPointer.width = 80;
 playerPointer.height = 40;
-playerPointer.setPos(field.x/2 - playerPointer.width/2, canvas.height - 17);
+playerPointer.position(field.x/2 - playerPointer.width/2, canvas.height - 17);
 playerPointer.fillStyle = 'white';
 
 document.addEventListener("click", mouseClickHandler, false);

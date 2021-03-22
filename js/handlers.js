@@ -12,7 +12,7 @@ function mouseClickHandler(e) {
         // Get selected cell
         let selectedRow = Math.floor(fieldMouseY/(field.height/field.cells.length));
         let selectedCol = Math.floor(fieldMouseX/(field.width/field.cells[0].length));
-        let selectedCell = field.getCell(selectedRow, selectedCol);
+        let selectedCell = field.cell(selectedRow, selectedCol);
         
         // If a cell is unblocked
         if(selectedCell.status() > 1){
@@ -59,7 +59,7 @@ function mouseClickHandler(e) {
                     });
                 });
             }
-            playerPointer.setPos(newPlayerPointerX, playerPointer.y);
+            playerPointer.position(newPlayerPointerX, playerPointer.y);
         }
     }
     draw();

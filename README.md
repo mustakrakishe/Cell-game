@@ -1,7 +1,7 @@
 # Cell game
 
 ## Introduction
-This is a simple two players-game based on HTML and pure JavaScript.
+It is a simple two players game based on HTML and pure JavaScript.
 So you can run it in your browser without the Internet connection. =)
 
 ## Game rules
@@ -14,3 +14,6 @@ The first player can choose any cell in the field. Then players altermate select
 The first player who has got 300 points wins.
 
 Good luck!
+
+## Try it!
+A game is available at https://mustakrakishe.github.io/Cell-game/.
